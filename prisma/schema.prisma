@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  password      String
+  role          Role         @default(USER)
+  isBlocked     Boolean      @default(false)
+  verified      Boolean      @default(false)
+  userDetails   UserDetails?
+  products      Product[]
+  wishlistItems WishlistItem[]
+  cart          Cart?
+  orders        Order[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model UserDetails {
+  id        String   @id @default(uuid())
+  fullName  String?
+  phone     String?
+  address   String?
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  name         String
+  price        Float
+  oldPrice     Float?
+  description  String?
+  category     String
+  quantity     Int?     @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  images       ProductImage[]
+  seller       User           @relation(fields: [sellerId], references: [id])
+  sellerId     String
+  wishlistedBy WishlistItem[]
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  url       String
+  publicId  String?  // The Cloudinary public_id for this image
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String     @unique // Each user has only one cart
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  quantity  Int      @default(1)
+  
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    String
+  
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+
+  @@unique([cartId, productId])
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  items           OrderItem[]
+  totalAmount     Float
+  
+  customerName    String
+  shippingAddress String
+  contactPhone    String
+
+  status          String      @default("PENDING")
+  paymentMethod   String      @default("PAY_ON_DELIVERY")
+  createdAt       DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  
+  quantity  Int
+  price     Float
+}

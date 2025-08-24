@@ -1,0 +1,40 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "npx prisma generate",
+    "postinstall": "prisma generate",
+    "dev": "nodemon server.js"
+  },
+  "author": "",
+  "type": "commonjs",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "cloudinary": "^1.41.3",
+    "cors": "^2.8.5",
+    "datauri": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "firebase": "^11.9.1",
+    "git-filter-repo": "^0.0.30",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^7.0.3",
+    "redis": "^5.0.1"
+  },
+  "keywords": [],
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.14.0"
+  }
+}

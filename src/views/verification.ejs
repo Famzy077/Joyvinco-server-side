@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+ body { font-family: Arial; background-color: rgba(0, 0, 0, 0.795);}
+ .codeBox{
+ place-content: center;
+ align-items: center;
+height: 84vh
+ }
+ main{
+ color: white;
+ text-align: center;
+ 
+}
+main h2{
+font-size: 1.5rem; 
+font-weight:500;
+font-family: Georgia, 'Times New Roman', Times, serif;
+}
+main p{
+font-size: 1.2rem; }
+main a{
+font-size: 1.2rem; 
+} .code-box p {
+    background-color: transparent;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-size: 2rem;
+    width: fit-content;
+    margin: 10px auto;
+    color: white;
+    font-weight: 700;
+}
+footer a{
+color: red;
+}
+footer p{
+color: gold;
+}
+</style>
+</head>
+<body>
+    <div class="codeBox">
+        <main>
+            <h2>Welcome to Joyvinco</h2>
+            <p>Here’s your verification code:</p>
+            <div class="code-box">
+                <p><%= code %></p>
+            </div>
+            <p>This code will expire in 10 minutes.</p>
+            <footer>
+                <p>Having issue verify the code?</p>
+                <a href="mailto://joyvincoventures@gmail.com">Contact us</a>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Order Received!</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f7;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .header {
+            background-color: #0f172a; /* Dark header for a premium feel */
+            color: #ffffff;
+            padding: 24px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 32px;
+            line-height: 1.6;
+        }
+        .content h2 {
+            font-size: 18px;
+            color: #1e293b;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+        .content p {
+            margin: 0 0 16px;
+        }
+        .info-section p {
+            margin: 4px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 0;
+            text-align: left;
+        }
+        th {
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .product-image {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .footer {
+            background-color: #f1f5f9;
+            padding: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Order Received!</h1>
+        </div>
+        <div class="content">
+            <p>A new order has been placed on Joyvinco. Please process it promptly.</p>
+
+            <div class="info-section">
+                <h2>Order Details</h2>
+                <p><strong>Order ID:</strong> <%= order.id %></p>
+                <p><strong>Total Amount:</strong> ₦<%= totalAmount.toLocaleString() %></p>
+                <p><strong>Payment Method:</strong> <%= order.paymentMethod.replace('_', ' ') %></p>
+            </div>
+
+            <div class="info-section">
+                <h2>Customer Information</h2>
+                <p><strong>Name:</strong> <%= order.customerName %></p>
+                <p><strong>Email:</strong> <%= customer.email %></p>
+                <p><strong>Contact Phone:</strong> <%= order.contactPhone %></p>
+                <p><strong>Shipping Address:</strong> <%= order.shippingAddress %></p>
+            </div>
+
+            <h2>Items Ordered</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th style="text-align: center;">Qty</th>
+                        <th style="text-align: right;">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% cartItems.forEach(function(item) { %>
+                        <tr>
+                            <td>
+                                <div class="product-info">
+                                    <% if (item.product.images && item.product.images.length > 0) { %>
+                                        <img
+                                            src="<%= item.product.images[0].url %>"
+                                            alt="<%= item.product.name %>"
+                                            class="product-image"
+                                        />
+                                    <% } %>
+                                    <span><%= item.product.name %></span>
+                                </div>
+                            </td>
+                            <td style="text-align: center;"><%= item.quantity %></td>
+                            <td style="text-align: right;">₦<%= (item.product.price * item.quantity).toLocaleString() %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <div class="footer">
+            <p>Please log in to the admin dashboard to process this order.</p>
+            <p>&copy; <%= new Date().getFullYear() %> Joyvinco. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
